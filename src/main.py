@@ -9,7 +9,7 @@ import json
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-VERSION = "0.1.2"
+VERSION = "0.1.4"
 
 URL = os.environ.get("URL")
 
@@ -21,8 +21,21 @@ trance_word = ""
 
 request_contents = ""
 
+logo = """
+ .----------------.  .----------------.  .----------------.  .----------------. 
+| .--------------. || .--------------. || .--------------. || .--------------. |
+| |     _____    | || |  _________   | || |  _________   | || |     _____    | |
+| |    |_   _|   | || | |_   ___  |  | || | |_   ___  |  | || |    |_   _|   | |
+| |      | |     | || |   | |_  \_|  | || |   | |_  \_|  | || |      | |     | |
+| |   _  | |     | || |   |  _|  _   | || |   |  _|  _   | || |   _  | |     | |
+| |  | |_' |     | || |  _| |___/ |  | || |  _| |___/ |  | || |  | |_' |     | |
+| |  `.___.'     | || | |_________|  | || | |_________|  | || |  `.___.'     | |
+| |              | || |              | || |              | || |              | |
+| '--------------' || '--------------' || '--------------' || '--------------' |
+ '----------------'  '----------------'  '----------------'  '----------------' 
+"""
+
 missing_message = """
-引数が不正です以下の通りに入力してください
 
 翻訳する場合
     jeej <翻訳する単語の言語> <翻訳後単語> <翻訳する単語>
@@ -67,7 +80,10 @@ def args_Check(args) -> str:
 
 
 # ここ冗長だからなんとかする
-
+    if len(sys.argv) == 1:
+        print(logo)
+        print(missing_message)
+        sys.exit(0)
     if len(sys.argv) == 4:
         option1 = args[1]
         option2 = args[2]
@@ -75,8 +91,9 @@ def args_Check(args) -> str:
     elif len(sys.argv) <= 2:
         option1 = args[1]
     else:
+        print("引数が不正です")
         print(missing_message)
-        exit(0)
+        sys.exit(0)
     
     
     return option1, option2, trance_word
@@ -94,10 +111,14 @@ def other_Message(option1: str) -> str:
 
     if option1 == "-c":
         print(check_message)
-        exit(0)
+        sys.exit(0)
     elif option1 == "-v":
         print(VERSION)
-        exit(0)
+        sys.exit(0)
+    else:
+        print("引数が不正です")
+        print(missing_message)
+        sys.exit(1)
 
 def check_Language(option1: str, option2: str) -> bool:
     global LAUNGUAGE
@@ -115,7 +136,7 @@ def check_Language(option1: str, option2: str) -> bool:
     if check_flag != 2:
         print("言語設定が不正です")
         print(check_message)
-        exit(1)
+        sys.exit(1)
     
     return True
     
