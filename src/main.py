@@ -18,6 +18,7 @@ args = sys.argv
 option1 = ""
 option2 = ""
 trance_word = ""
+other_flag = 0
 
 request_contents = ""
 
@@ -64,8 +65,9 @@ LAUNGUAGE=["ja","en","kr","cn"]
 
 
 def main():
-    option1, option2, trance_word = args_Check(args)
-    other_Message(option1)
+    option1, option2, trance_word, other_flag = args_Check(args)
+    if other_flag:
+        other_Message(option1)
     judge = check_Language(option1,option2)
     if judge:
         trancelation_result = request_TranceWord(option1, option2, trance_word)
@@ -77,7 +79,7 @@ def args_Check(args) -> str:
     global trance_word
     global missing_message
     global check_message
-
+    global other_flag
 
 # ここ冗長だからなんとかする
     if len(sys.argv) == 1:
@@ -90,13 +92,14 @@ def args_Check(args) -> str:
         trance_word = args[3]
     elif len(sys.argv) <= 2:
         option1 = args[1]
+        other_flag = 1
     else:
         print("引数が不正です")
         print(missing_message)
         sys.exit(0)
     
     
-    return option1, option2, trance_word
+    return option1, option2, trance_word, other_flag
 
 
 def request_TranceWord(word_launguage: str, trance_launguage: str, trance_word: str) -> str:
