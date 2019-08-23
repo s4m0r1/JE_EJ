@@ -9,7 +9,7 @@ import json
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-VERSION = "0.1.4"
+VERSION = "0.1.5"
 
 URL = os.environ.get("URL")
 
